@@ -58,12 +58,30 @@ export default () => {
 
   const [operationBtnGroups, setOperationBtnGroups] = useState(initBtnGroups);
   const [extraBtnGroups, setExtraBtnGroups] = useState(initExtraBtnGroups);
+  const [pauseState, setPauseState] = useState(false);
+
+  const playControl = (operateBtn: string) => {
+    if (operateBtn !== "pause-icon") {
+      return;
+    }
+    setPauseState(!pauseState);
+    if (pauseState) {
+      operationBtnGroups[1].src = startIcon;
+    } else {
+      operationBtnGroups[1].src = pauseIcon;
+    }
+  };
 
   const operationButtonEls = (btnGroups) => {
     return btnGroups.map((item) => {
       const { id, src, cls } = item;
       return (
-        <img key={id} src={src} className={ConfigClsName(prefixCls, cls)}></img>
+        <img
+          key={id}
+          src={src}
+          className={ConfigClsName(prefixCls, cls)}
+          onClick={() => playControl(cls)}
+        ></img>
       );
     });
   };
