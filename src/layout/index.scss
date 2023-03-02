@@ -1,0 +1,22 @@
+$prefixCls: layout;
+
+.#{$prefixCls} {
+  &-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    // background-color: #f2f3f7;
+    background-color: bisque;
+  }
+  &-right-layout {
+    width: calc(100% - 232px);
+  }
+
+  &-content-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: calc(100% - 100px);
+  }
+}

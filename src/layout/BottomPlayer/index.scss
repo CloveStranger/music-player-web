@@ -1,0 +1,14 @@
+$prefixCls: bottom-player;
+
+.#{$prefixCls} {
+  &-container {
+    height: 100px;
+    width: calc(100% - 40px);
+    background-color: #ffffff80;
+    margin: 20px;
+    border-radius: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}

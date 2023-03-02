@@ -1,0 +1,71 @@
+$prefixCls: "self-menu";
+
+.item-common-style {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 50px;
+  font-weight: 600;
+  padding-left: 30px;
+}
+
+.ul-li-common-style {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.#{$prefixCls} {
+  &-container {
+    margin: 0;
+  }
+  &-parent-item {
+    @extend .item-common-style;
+    color: #333333;
+    margin-bottom: 5px;
+  }
+  &-child-item {
+    @extend .item-common-style;
+    color: #333333;
+    font-size: 15px;
+    cursor: pointer;
+    opacity: 0.3;
+    &:hover {
+      color: #2d8cf0;
+      opacity: 1;
+    }
+  }
+
+  &-selected-item {
+    position: relative;
+    opacity: 1;
+    &:hover {
+      color: #333333;
+    }
+  }
+
+  &-selected-item::before {
+    position: absolute;
+    left: 0;
+    content: "";
+    height: 20px;
+    width: 5px;
+    border-radius: 100px;
+    background-color: #2d8cf0;
+  }
+
+  &-li-style {
+    padding-left: unset;
+  }
+  &-menu-icon {
+    width: 25px;
+    margin-right: 15px;
+  }
+}
+
+ul {
+  @extend .ul-li-common-style;
+}
+li {
+  @extend .ul-li-common-style;
+}

@@ -1,0 +1,11 @@
+$prefixCls: common-content-body;
+
+.#{$prefixCls} {
+  &-container {
+    height: calc(100% - 108px);
+    width: calc(100% - 20px);
+    background-color: #ffffff80;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+}

@@ -1,0 +1,12 @@
+$prefixCls: side-bar;
+
+.#{$prefixCls} {
+  &-container {
+    width: 232px;
+    height: calc(100% - 40px);
+    background-color: #ffffff80;
+    box-shadow: 1px 0 4px 0 rgba(13, 17, 52, 0.12);
+    margin: 40px 20px;
+    border-radius: 10px;
+  }
+}
