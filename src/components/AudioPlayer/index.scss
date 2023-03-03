@@ -73,6 +73,9 @@ $prefixCls: audio-player;
   &-audio-track {
     width: calc(100% - 200px);
   }
+  &-tooltip-box {
+    color: #333333;
+  }
 }
 
 @keyframes rotate {
