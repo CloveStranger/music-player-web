@@ -1,21 +1,19 @@
-import operationEl from "../OperationEl";
 import testLogo from "../../../assets/jpg/backgroundPic.jpg";
 import { Slider } from "antd";
 import ConfigClsName from "../../../utils/configClsName";
-import constants from "../constants";
-import state from "../state";
 import configMusicTime from "../../../utils/configMusicTime";
+import LeftControl from "../LeftOperationEl";
+import audioPlayerState from "../state";
+import { observer } from "mobx-react";
 
 export default function Controls() {
-  const { prefixCls } = constants();
-  const localState = state();
-  const { music, pause } = localState;
-  const { musicTime, setMusicTime } = music;
-  const { pauseState, setPauseState } = pause;
+  const state = new audioPlayerState();
+  const prefixCls = "audio-player";
 
-  return (
-    <div className={ConfigClsName(prefixCls, "control-container")}>
-      <div className={ConfigClsName(prefixCls, "control-left-part")}>
+  const MusicImg = observer(() => {
+    const { pauseState } = state;
+    return (
+      <>
         <img
           src={testLogo}
           className={ConfigClsName(prefixCls, [
@@ -25,37 +23,69 @@ export default function Controls() {
               : "audio-preview-img-rotate",
           ])}
         ></img>
-        <div className={ConfigClsName(prefixCls, "audio-info")}>
-          <span>Music Name</span>
-          <span>Music Author</span>
-        </div>
-      </div>
-      <div className={ConfigClsName(prefixCls, "control-center-part")}>
-        <div className={ConfigClsName(prefixCls, "operation-button-groups")}>
-          <>{operationEl("left", localState)}</>
-        </div>
+      </>
+    );
+  });
+
+  const StartTimeEl = observer(() => {
+    const { startTime } = state;
+    return (
+      <>
         <span className={ConfigClsName(prefixCls, "time-text")}>
-          {configMusicTime(musicTime[0])}
+          {configMusicTime(startTime)}
         </span>
+      </>
+    );
+  });
+
+  const MusicScrollBar = observer(() => {
+    const { startTime, endTime, handleSliderChange } = state;
+    return (
+      <>
         <Slider
           className={ConfigClsName(prefixCls, "audio-track")}
-          defaultValue={musicTime[0]}
+          defaultValue={startTime}
           tooltip={{
             formatter: (value) => {
               return configMusicTime(value ?? 60);
             },
           }}
           min={0}
-          max={musicTime[1]}
-          value={musicTime[0]}
+          max={endTime}
+          value={startTime}
+          onChange={handleSliderChange}
         ></Slider>
+      </>
+    );
+  });
+
+  const EndTimeEl = observer(() => {
+    const { endTime } = state;
+    return (
+      <>
         <span className={ConfigClsName(prefixCls, "time-text")}>
-          {configMusicTime(musicTime[1])}
+          {configMusicTime(endTime)}
         </span>
+      </>
+    );
+  });
+
+  return (
+    <div className={ConfigClsName(prefixCls, "control-container")}>
+      <div className={ConfigClsName(prefixCls, "control-left-part")}>
+        <MusicImg></MusicImg>
+        <div className={ConfigClsName(prefixCls, "audio-info")}>
+          <span>Music Name</span>
+          <span>Music Author</span>
+        </div>
       </div>
-      <div className={ConfigClsName(prefixCls, "control-right-part")}>
-        <>{operationEl("right", localState)}</>
+      <div className={ConfigClsName(prefixCls, "control-center-part")}>
+        <LeftControl></LeftControl>
+        <StartTimeEl></StartTimeEl>
+        <MusicScrollBar></MusicScrollBar>
+        <EndTimeEl></EndTimeEl>
       </div>
+      <div className={ConfigClsName(prefixCls, "control-right-part")}></div>
     </div>
   );
 }

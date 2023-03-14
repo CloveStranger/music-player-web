@@ -1,15 +1,22 @@
-import { useState } from "react";
-import constants from "./constants";
+import { makeAutoObservable } from "mobx";
 
-export default () => {
-  const { operationIconMap, leftBtnGroups, rightBtnGroups } = constants();
-  const [pauseState, setPauseState] = useState(true);
-  const [musicTime, setMusicTime] = useState([0, 120]);
-  const [leftBtns, setLeftBtns] = useState(leftBtnGroups);
-  const [rightBtns, setRightBtns] = useState(leftBtnGroups);
+class audioPlayerState {
+  pauseState = true;
+  startTime = 0;
+  endTime = 120;
+  constructor() {
+    makeAutoObservable(this);
+  }
 
-  return {
-    pause: { pauseState, setPauseState },
-    music: { musicTime, setMusicTime },
+  changePauseState = () => {
+    console.log("123");
+
+    this.pauseState = !this.pauseState;
   };
-};
+
+  handleSliderChange = (timeInfo: number) => {
+    this.startTime = timeInfo;
+  };
+}
+
+export default audioPlayerState;

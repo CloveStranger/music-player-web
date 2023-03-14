@@ -1,0 +1,7 @@
+$prefixCls: operation-el;
+.#{$prefixCls} {
+  &-text {
+    color: #33333390;
+    font-weight: 600;
+  }
+}

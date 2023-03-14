@@ -58,11 +58,6 @@ $prefixCls: audio-player;
     margin-left: 20px;
     min-width: max-content;
   }
-  &-operation-button-groups {
-    @extend.flex-row;
-    align-items: center;
-    cursor: pointer;
-  }
   &-back-arrow {
     @extend .common-arrow-style;
   }
