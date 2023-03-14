@@ -45,7 +45,14 @@ $prefixCls: audio-player;
     border-radius: 50%;
     cursor: pointer;
     animation: rotate 5s linear infinite;
+    &-no-rotate {
+      animation-play-state: paused;
+    }
+    &-rotate {
+      animation-play-state: running;
+    }
   }
+
   &-audio-info {
     @extend .flex-column;
     margin-left: 20px;

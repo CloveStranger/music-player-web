@@ -1,11 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import constants from "./constants";
 import testMusic1 from "../../assets/audio/ヨルシカ - だから僕は音楽を辞めた.mp3";
 import testMusic2 from "../../assets/audio/樱 - 爱酱出场音频.mp3";
 
 import { Howl, Howler } from "howler";
-const sound = new Howl({
-  src: [testMusic1],
+
+interface operationItem {
+  src: string;
+  tooltipText: string;
+}
+
+const musics = [testMusic1, testMusic2];
+let sound;
+let curMusicId;
+
+sound = new Howl({
+  src: musics[0],
 });
 
 export default (state) => {
@@ -15,26 +25,74 @@ export default (state) => {
   const { pause, music } = state;
   const { pauseState, setPauseState } = pause;
   const { musicTime, setMusicTime } = music;
+  const [arrayStore, setArrayStore] = useState([]);
 
   const [playList, setPlayList] = useState([testMusic1]);
 
-  const handlePause = (btnGroups) => {
-    setPauseState(!pauseState);
+  useEffect(() => {
+    if (arrayStore?.length) {
+      const targetIcon: operationItem = arrayStore[1];
 
-    if (pauseState) {
-      btnGroups[1].src = operationIconMap.get("startIcon");
-      btnGroups[1].tooltipText = "播放";
-      sound.pause();
-      clearInterval(seekInterval);
-    } else {
-      btnGroups[1].src = operationIconMap.get("pauseIcon");
-      btnGroups[1].tooltipText = "暂停";
-      const curMusicId = sound.play();
+      if (pauseState) {
+        setArrayStore((): any => {
+          targetIcon.src = operationIconMap.get("startIcon") || "";
+          targetIcon.tooltipText = "播放";
+          return targetIcon;
+        });
+
+        sound.pause();
+        clearInterval(seekInterval);
+      } else {
+        console.log(false);
+
+        setArrayStore((): any => {
+          targetIcon.src = operationIconMap.get("pauseIcon") || "";
+          targetIcon.tooltipText = "暂停";
+          return targetIcon;
+        });
+
+        curMusicId = sound.play();
+        setMusicTime(() => {
+          let output = musicTime;
+          output = [sound.seek(curMusicId), sound.duration(curMusicId)];
+          return output;
+        });
+
+        seekInterval = setInterval(() => {
+          setMusicTime(() => {
+            let output = musicTime;
+
+            output = [sound.seek(curMusicId), sound.duration(curMusicId)];
+            return output;
+          });
+        }, 1000);
+      }
+    }
+  }, [pauseState]);
+
+  const handlePause = () => {
+    setPauseState(!pauseState);
+  };
+
+  const handleChange = (changeDirection: string) => {
+    setPauseState(false);
+    if (changeDirection == "pre") {
+      console.log("pre");
+    }
+    if (changeDirection === "next") {
+      if (sound) {
+        sound.stop(curMusicId);
+      }
+      sound = new Howl({
+        src: musics[1],
+      });
+      sound.play();
       setMusicTime(() => {
         let output = musicTime;
         output = [sound.seek(curMusicId), sound.duration(curMusicId)];
         return output;
       });
+
       seekInterval = setInterval(() => {
         setMusicTime(() => {
           let output = musicTime;
@@ -42,14 +100,6 @@ export default (state) => {
           return output;
         });
       }, 1000);
-    }
-  };
-
-  const handleChange = (changeDirection: string) => {
-    if (changeDirection == "pre") {
-      console.log("pre");
-    }
-    if (changeDirection === "next") {
       console.log("next");
     }
   };
@@ -72,7 +122,8 @@ export default (state) => {
       handleChange(operateBtn);
     }
     if (operateBtn === "pausePlay") {
-      handlePause(btnGroups);
+      handlePause();
+      setArrayStore(btnGroups);
     }
     if (operateBtn === "favourite") {
       handleFavourite();

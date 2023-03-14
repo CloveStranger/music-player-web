@@ -9,15 +9,21 @@ import configMusicTime from "../../../utils/configMusicTime";
 export default function Controls() {
   const { prefixCls } = constants();
   const localState = state();
-  const { music } = localState;
+  const { music, pause } = localState;
   const { musicTime, setMusicTime } = music;
+  const { pauseState, setPauseState } = pause;
 
   return (
     <div className={ConfigClsName(prefixCls, "control-container")}>
       <div className={ConfigClsName(prefixCls, "control-left-part")}>
         <img
           src={testLogo}
-          className={ConfigClsName(prefixCls, "audio-preview-img")}
+          className={ConfigClsName(prefixCls, [
+            "audio-preview-img",
+            pauseState
+              ? "audio-preview-img-no-rotate"
+              : "audio-preview-img-rotate",
+          ])}
         ></img>
         <div className={ConfigClsName(prefixCls, "audio-info")}>
           <span>Music Name</span>

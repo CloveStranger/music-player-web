@@ -35,7 +35,7 @@ export default () => {
       id: 2,
       src: startIcon,
       cls: "pause-icon",
-      tooltipText: "暂停",
+      tooltipText: "播放",
       operationName: "pausePlay",
     },
     {
