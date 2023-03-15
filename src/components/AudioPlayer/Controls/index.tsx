@@ -7,8 +7,11 @@ import audioPlayerState from "../state";
 import { observer } from "mobx-react";
 
 export default function Controls() {
-  const state = new audioPlayerState();
+  const state = audioPlayerState;
   const prefixCls = "audio-player";
+  const { initAudio, playAudio } = state;
+
+  initAudio();
 
   const MusicImg = observer(() => {
     const { pauseState } = state;
@@ -61,6 +64,7 @@ export default function Controls() {
 
   const EndTimeEl = observer(() => {
     const { endTime } = state;
+
     return (
       <>
         <span className={ConfigClsName(prefixCls, "time-text")}>

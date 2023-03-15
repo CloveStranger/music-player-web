@@ -1,7 +1,5 @@
 import { Tooltip } from "antd";
-import { ReactElement } from "react";
 import configClsName from "../../../utils/configClsName";
-import ConfigClsName from "../../../utils/configClsName";
 import "./index.scss";
 
 const prefixCls = "operation-el";
@@ -17,7 +15,9 @@ export default function OperationEl(ContentEl: any, tooltipText: string) {
   return (
     <>
       <Tooltip placement="top" color={"transparent"} title={titleEl}>
-        {ContentEl}
+        <div>
+          <ContentEl></ContentEl>
+        </div>
       </Tooltip>
     </>
   );

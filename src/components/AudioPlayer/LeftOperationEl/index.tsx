@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 const prefixCls = "left-operation-el";
 
 export default function LeftControl() {
-  const state = new audioPlayerState();
+  const state = audioPlayerState;
 
   const preArrow = () => {
     return (
@@ -37,11 +37,13 @@ export default function LeftControl() {
   });
 
   const nextArrow = () => {
+    const { next } = state;
     return (
       <>
         <img
           className={configClsName(prefixCls, "next-arrow")}
           src={audioArrowIcon}
+          onClick={next}
         />
       </>
     );
@@ -50,12 +52,9 @@ export default function LeftControl() {
   return (
     <>
       <div className={configClsName(prefixCls, "container")}>
-        <OperationEl tooltipText="上一首"></OperationEl>
-        {/* {operationEl(startPauseIcon, "开始播放")} */}
-        {/* <OperationEl
-          ContentEl={nextArrow()}
-          tooltipText={"下一首"}
-        ></OperationEl> */}
+        {OperationEl(preArrow, "上一首")}
+        {OperationEl(startPauseIcon, "开始播放")}
+        {OperationEl(nextArrow, "下一首")}
       </div>
     </>
   );
