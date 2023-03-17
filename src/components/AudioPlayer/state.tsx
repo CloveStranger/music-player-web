@@ -24,13 +24,17 @@ class audioPlayerState {
     });
   };
 
+  audioTimeAdd = () => {
+    this.startTime = soundPlayer.seek(this.curMusicId);
+  };
+
   playAudio = () => {
     this.curMusicId = soundPlayer.play();
     this.startTime = soundPlayer.seek(this.curMusicId);
     this.endTime = soundPlayer.duration([this.curMusicId]);
 
     this.playTimeInterval = setInterval(() => {
-      this.startTime = soundPlayer.seek(this.curMusicId);
+      this.audioTimeAdd();
     }, 1000);
   };
 
