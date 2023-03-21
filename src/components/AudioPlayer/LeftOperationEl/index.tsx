@@ -13,11 +13,13 @@ export default function LeftControl() {
   const state = audioPlayerState;
 
   const preArrow = () => {
+    const { pre } = state;
     return (
       <>
         <img
           className={configClsName(prefixCls, "pre-arrow")}
           src={audioArrowIcon}
+          onClick={pre}
         />
       </>
     );

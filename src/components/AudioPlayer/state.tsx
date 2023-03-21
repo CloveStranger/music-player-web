@@ -14,13 +14,14 @@ class audioPlayerState {
   musicList = musics;
   curMusicId = -1;
   playTimeInterval = -1;
+  curListNumer = 0;
 
   constructor() {
     makeAutoObservable(this);
   }
   initAudio = async () => {
     soundPlayer = new Howl({
-      src: this.musicList[0],
+      src: this.musicList[this.curListNumer],
     });
   };
 
@@ -28,10 +29,17 @@ class audioPlayerState {
     this.startTime = soundPlayer.seek(this.curMusicId);
   };
 
+  endTimeMakee = () => {
+    this.endTime = soundPlayer.duration([this.curMusicId]);
+  };
+
   playAudio = () => {
     this.curMusicId = soundPlayer.play();
     this.startTime = soundPlayer.seek(this.curMusicId);
-    this.endTime = soundPlayer.duration([this.curMusicId]);
+
+    soundPlayer.on("play", () => {
+      this.endTimeMakee();
+    });
 
     this.playTimeInterval = setInterval(() => {
       this.audioTimeAdd();
@@ -43,8 +51,12 @@ class audioPlayerState {
     clearInterval(this.playTimeInterval);
   };
 
-  changePauseState = () => {
-    this.pauseState = !this.pauseState;
+  changePauseState = (playSignal: any) => {
+    if (typeof playSignal !== "undefined" && typeof playSignal !== "object") {
+      this.pauseState = playSignal;
+    } else {
+      this.pauseState = !this.pauseState;
+    }
 
     if (this.pauseState) {
       this.pauseAudio();
@@ -53,13 +65,31 @@ class audioPlayerState {
     }
   };
 
-  handleSliderChange = (timeInfo: number) => {
-    this.startTime = timeInfo;
+  next = () => {
+    this.curListNumer += 1;
+    if (Object.entries(soundPlayer).length) {
+      soundPlayer.stop();
+    }
+    soundPlayer = soundPlayer = new Howl({
+      src: this.musicList[this.curListNumer],
+    });
+    this.changePauseState(false);
   };
 
-  next = () => {
-    this.endTime += 1;
-    console.log(this.endTime);
+  pre = () => {
+    this.curListNumer -= 1;
+    if (Object.entries(soundPlayer).length) {
+      soundPlayer.stop();
+    }
+    soundPlayer = soundPlayer = new Howl({
+      src: this.musicList[this.curListNumer],
+    });
+    this.changePauseState(false);
+  };
+
+  handleSliderChange = (timeInfo: number) => {
+    this.startTime = timeInfo;
+    soundPlayer.seek(timeInfo, this.curMusicId);
   };
 }
 

@@ -5,6 +5,8 @@ import configMusicTime from "../../../utils/configMusicTime";
 import LeftControl from "../LeftOperationEl";
 import audioPlayerState from "../state";
 import { observer } from "mobx-react";
+import RightOperationEl from "../RightOperationEl";
+import "./index.scss";
 
 export default function Controls() {
   const state = audioPlayerState;
@@ -85,11 +87,15 @@ export default function Controls() {
       </div>
       <div className={ConfigClsName(prefixCls, "control-center-part")}>
         <LeftControl></LeftControl>
-        <StartTimeEl></StartTimeEl>
-        <MusicScrollBar></MusicScrollBar>
-        <EndTimeEl></EndTimeEl>
+        <div className={ConfigClsName(prefixCls, "time-scroll-container")}>
+          <StartTimeEl></StartTimeEl>
+          <MusicScrollBar></MusicScrollBar>
+          <EndTimeEl></EndTimeEl>
+        </div>
       </div>
-      <div className={ConfigClsName(prefixCls, "control-right-part")}></div>
+      <div className={ConfigClsName(prefixCls, "control-right-part")}>
+        <RightOperationEl></RightOperationEl>
+      </div>
     </div>
   );
 }

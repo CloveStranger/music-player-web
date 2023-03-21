@@ -1,0 +1,25 @@
+$prefixCls: right-operation-el;
+
+.#{$prefixCls} {
+  &-favourite-icon {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  &-playlist-icon {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  &-list-status-icon {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
