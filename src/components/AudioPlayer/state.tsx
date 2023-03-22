@@ -15,21 +15,17 @@ class audioPlayerState {
   curMusicId = -1;
   playTimeInterval = -1;
   curListNumer = 0;
+  listPlayStatus = 0;
 
   constructor() {
     makeAutoObservable(this);
   }
-  initAudio = async () => {
-    soundPlayer = new Howl({
-      src: this.musicList[this.curListNumer],
-    });
-  };
 
   audioTimeAdd = () => {
     this.startTime = soundPlayer.seek(this.curMusicId);
   };
 
-  endTimeMakee = () => {
+  endTimeMake = () => {
     this.endTime = soundPlayer.duration([this.curMusicId]);
   };
 
@@ -38,7 +34,7 @@ class audioPlayerState {
     this.startTime = soundPlayer.seek(this.curMusicId);
 
     soundPlayer.on("play", () => {
-      this.endTimeMakee();
+      this.endTimeMake();
     });
 
     this.playTimeInterval = setInterval(() => {
@@ -64,32 +60,70 @@ class audioPlayerState {
       this.playAudio();
     }
   };
-
-  next = () => {
-    this.curListNumer += 1;
+  audioMaker = () => {
     if (Object.entries(soundPlayer).length) {
       soundPlayer.stop();
     }
-    soundPlayer = soundPlayer = new Howl({
+    soundPlayer = new Howl({
       src: this.musicList[this.curListNumer],
+      loop: this.listPlayStatus === 1,
     });
+  };
+
+  audioEventMaker = () => {
+    soundPlayer.off("end");
+    if (this.listPlayStatus === 0) {
+      soundPlayer.on("end", () => {
+        this.next();
+      });
+    }
+    if (this.listPlayStatus === 1) {
+      soundPlayer.on("end", () => {
+        this.audioMaker();
+        this.changePauseState(false);
+      });
+    }
+    if (this.listPlayStatus === 2) {
+      soundPlayer.on("end", () => {
+        this.next();
+      });
+    }
+  };
+
+  next = () => {
+    this.curListNumer += 1;
+
+    if (this.curListNumer > this.musicList.length - 1) {
+      this.curListNumer = 0;
+    }
+    this.audioMaker();
+    this.audioEventMaker();
     this.changePauseState(false);
   };
 
   pre = () => {
     this.curListNumer -= 1;
-    if (Object.entries(soundPlayer).length) {
-      soundPlayer.stop();
-    }
-    soundPlayer = soundPlayer = new Howl({
-      src: this.musicList[this.curListNumer],
-    });
+    this.audioMaker();
+    this.audioEventMaker();
     this.changePauseState(false);
   };
 
   handleSliderChange = (timeInfo: number) => {
     this.startTime = timeInfo;
     soundPlayer.seek(timeInfo, this.curMusicId);
+  };
+
+  changeListPlayStatus = () => {
+    this.listPlayStatus += 1;
+    if (this.listPlayStatus > 2) {
+      this.listPlayStatus = 0;
+    }
+    this.audioEventMaker();
+  };
+
+  initAudio = async () => {
+    this.audioMaker();
+    this.audioEventMaker();
   };
 }
 
