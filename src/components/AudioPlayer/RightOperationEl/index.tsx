@@ -33,7 +33,7 @@ export default function RightOperationEl() {
     );
   };
   const PlayListStatusEl = observer(() => {
-    const { listPlayStatus, changeListPlayStatus } = state;
+    const { listPlayStatus, changeListPlayStatus, listPlayStatusName } = state;
     const listStatusIcon = () => {
       let output = listCircleIcon;
       if (listPlayStatus === 0) {
@@ -47,35 +47,22 @@ export default function RightOperationEl() {
       }
       return output;
     };
-    return (
-      <>
+    const el = () => {
+      return (
         <img
           src={listStatusIcon()}
           className={configClsName(prefixCls, "list-status-icon")}
           onClick={changeListPlayStatus}
         ></img>
-      </>
-    );
+      );
+    };
+    return <>{OperationEl(el, listPlayStatusName)}</>;
   });
-  const PlayListStatusTitle = () => {
-    const { listPlayStatus } = state;
-    let output = "列表循环";
-
-    if (listPlayStatus === 1) {
-      output = "单曲循环";
-    }
-    if (listPlayStatus === 2) {
-      output = "随机播放";
-    }
-    console.log(output);
-
-    return output;
-  };
   return (
     <>
       {OperationEl(FavouriteEl, "添加我的喜爱")}
       {OperationEl(PlaylistEl, "播放列表")}
-      {OperationEl(PlayListStatusEl, PlayListStatusTitle())}
+      <PlayListStatusEl></PlayListStatusEl>
     </>
   );
 }

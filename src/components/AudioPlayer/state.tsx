@@ -16,6 +16,7 @@ class audioPlayerState {
   playTimeInterval = -1;
   curListNumer = 0;
   listPlayStatus = 0;
+  listPlayStatusName = "列表循环";
 
   constructor() {
     makeAutoObservable(this);
@@ -118,6 +119,16 @@ class audioPlayerState {
     if (this.listPlayStatus > 2) {
       this.listPlayStatus = 0;
     }
+    if (this.listPlayStatus === 0) {
+      this.listPlayStatusName = "列表循环";
+    }
+    if (this.listPlayStatus === 1) {
+      this.listPlayStatusName = "单曲循环";
+    }
+    if (this.listPlayStatus === 2) {
+      this.listPlayStatusName = "随机播放";
+    }
+
     this.audioEventMaker();
   };
 
