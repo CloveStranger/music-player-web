@@ -20,7 +20,7 @@ class audioPlayerState {
 
   constructor() {
     makeAutoObservable(this);
-  }
+  } 
 
   audioTimeAdd = () => {
     this.startTime = soundPlayer.seek(this.curMusicId);

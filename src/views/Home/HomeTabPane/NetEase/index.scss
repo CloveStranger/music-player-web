@@ -1,0 +1,12 @@
+$prefixCls: netease;
+
+.#{$prefixCls} {
+  &-play-list-tag {
+    width: max-content;
+  }
+  &-tag-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
